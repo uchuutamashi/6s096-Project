@@ -1,8 +1,0 @@
-include make/all_head.mk
-
-# If you want to create more targets, feel free
-# to write the makefiles and include them here.
-include make/rational.mk
-include make/rational-test.mk
-
-include make/all_tail.mk
