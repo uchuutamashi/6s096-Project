@@ -45,8 +45,8 @@ namespace nbody{
     public:
       Simulation();
       Simulation(std::vector<Body>);
-      void loadRu(std::istream&);
-      void saveRu(std::ostream&) const;
+      void loadRun(std::istream&);
+      void saveRun(std::ostream&) const;
       void evolveSystemFor(const double t);
   }; //class Simulation
 
