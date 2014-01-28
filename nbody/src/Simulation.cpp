@@ -4,13 +4,13 @@ namespace nbody{
   Simulation::Simulation() : _body{}, _tnow{0} {}
   Simulation::Simulation(std::vector<Body> Bodies) : _body{Bodies}, _tnow{0} {}
 
-  void Simulation::loadRu(std::istream&){
+  void Simulation::loadRun(std::istream&){
     //create an array of bodies and initialize them with corresponding mass, pos_i, vel_i
     //in the file and set _body to the new array
 
   }
 
-  void Simulation::saveRu(std::ostream&) const{
+  void Simulation::saveRun(std::ostream&) const{
     //do the reverse of loadRu, save the latest positions and velocities along with masses
   
   }
