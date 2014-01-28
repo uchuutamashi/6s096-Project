@@ -11,7 +11,7 @@ $(TARGET_PROJ_DEMO) : $(INSTALL_DIR)/lib/lib$(PROJ_NAME).a
 
 ## Link our nbody-demo.x executable with libnbody.a
 ## (here is where you add any extra third-party library linkings needed)
-$(TARGET_PROJ_DEMO) : LDFLAGS += $(INSTALL_DIR)/lib/lib$(PROJ_NAME).a
+$(TARGET_PROJ_DEMO) : LDFLAGS += $(INSTALL_DIR)/lib/lib$(PROJ_NAME).a -lglut
 
 ## Add any more files to this list
 OBJECTS_PROJ_DEMO := \
