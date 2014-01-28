@@ -50,6 +50,13 @@ namespace nbody {
     integrateSystem( dt );
   }
 
+  Vector3f System::getPosition( size_t id ) const{
+    if( id >= _nBodies ) {
+      throw std::out_of_range("ID is larger than total number of bodies");
+    }
+    return _body[id].position();
+  }
+
   void System::readState( std::istream &input ) {
     input >> _nBodies;
     if( _nBodies > MAX_BODIES_RECOMMENDED ) {

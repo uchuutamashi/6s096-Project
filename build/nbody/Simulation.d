@@ -1,2 +1,3 @@
-Simulation.o build/nbody/Simulation.d : src/Simulation.cpp include/nbody/Simulation.h \
- include/nbody/System.h include/nbody/Vector3.h include/nbody/Body.h
+Simulation.o build/nbody/Simulation.d : src/Simulation.cpp install/include/nbody/Simulation.h \
+ install/include/nbody/System.h install/include/nbody/Vector3.h \
+ install/include/nbody/Body.h
