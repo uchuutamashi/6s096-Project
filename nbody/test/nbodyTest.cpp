@@ -1,6 +1,17 @@
 #include <nbody/nbody.h>
 #include <gtest/gtest.h>
 
+using namespace nbody;
+
+TEST(BodyTests, constantAcceleration){
+  Body testBody = Body{1, Vector3d{0,0,0}, Vector3d{0,0,0}};
+  const Vector3d accel = Vector3d{1,0,0};
+  for(int i=1; i<10; i++){
+    testBody.evolve(accel);
+    EXPECT_LT(testBody.pos().x()-0.5*i*DELTA*i*DELTA, DELTA*DELTA);
+  };
+}
+
 /*
 TEST( rationalTests, equality ) {
   ASSERT_TRUE( Rational( 1, 2 ) == Rational( 2, 4 ) );
