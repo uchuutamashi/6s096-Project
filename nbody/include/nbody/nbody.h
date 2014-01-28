@@ -8,7 +8,7 @@
 #include <Vector3.h>
 #include <stdexcept>
 
-typedef std::vector<Vector3d> TimeSeries;
+typedef std::vector<Vector3d<double>> TimeSeries;
 
 namespace nbody{
   class Body{
@@ -17,12 +17,13 @@ namespace nbody{
       TimeSeries _vel;  //time series for velocity (i=0,1,..,n)
       TimeSeries _acc;  //time series for acceleration (i=0,1,..,n-1 , the current accel needs to be input)
     public:                  
-      Body(double, Vector3d, Vector3d); //create mass with inital position and velocity 
-      void evolve(const Vector3d accel);    //takes acceleration and find position & velocity for the next timestep
+      Body(double, Vector3<double>, Vector3<double>); //create mass with inital position and velocity 
+      void evolve(const Vector3<double> accel);    //takes acceleration and find position & velocity for the next timestep
       inline double mass() const{ return _mass; };
-      inline Vector3d pos() const{ return _pos.back(); };
-      inline Vector3d vel() const{ return _vel.back(); };      
-      inline Vector3d pos(size_t t) const{ 
+      inline Vector3<double> pos() const{ return _pos.back(); };
+      inline Vector3<double> vel() const{ return _vel.back(); };      
+      
+      inline Vector3<double> pos(size_t t) const{ 
         if(t<_pos.size()){
           return _pos[t];
         }else{
@@ -30,7 +31,7 @@ namespace nbody{
         } 
       };
 
-      inline Vector3d vel(size_t t) const{ 
+      inline Vector3<double> vel(size_t t) const{ 
         if(t<_pos.size()){
           return _pos[t];
         }else{
@@ -51,12 +52,12 @@ namespace nbody{
   }; //class Simulation
 
   //math functions
-  inline Vector3d Gravity(const Body& source, const Body& body){ //calculate the acceleration due to source on the body
-    Vector3d r = source.pos()-body.pos();
+  inline Vector3<double> gravity(const Body& source, const Body& body){ //calculate the acceleration due to source on the body
+    Vector3<double> r = source.pos() - body.pos();
     return (source.mass()/r.normsq())*r;
   }
 
-  inline Vector3d Integrate(const TimeSeries& init_val, const TimeSeries& rate){ //calculate the next value from old value and rate of change
+  inline Vector3<double> integrate(const TimeSeries& init_val, const TimeSeries& rate){ //calculate the next value from old value and rate of change
     return init_val.back() + rate.back() * DELTA;
   }
 } //namespace nbody
