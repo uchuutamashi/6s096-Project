@@ -4,17 +4,20 @@
 #define DELTA 0.0001
 
 using namespace nbody;
+typedef std::vector<Body> tBodyVec;
 
 TEST( physicsTest, constAccel ) {
-  Body *testobj = new Body;
-  testobj->position() = Vector3d{0,0,0};
-  testobj->velocity() = Vector3d{0,0,0};
-  testobj->force()    = Vector3d{1,0,0};
+  tBodyVec testobj;
+  testobj.resize(1);
+  testobj[0].position() = Vector3d{0,0,0};
+  testobj[0].velocity() = Vector3d{0,0,0};
+  testobj[0].accel()    = Vector3d{1,0,0};
   
-  System *testsys = new System{1,testobj};
+  System *testsys = new System{testobj, Euler, DELTA};
 
   for(int i=1; i<100; i++){
-    testsys->integrateSystem(DELTA);
+    testsys->integrateSystem( );
     EXPECT_LT(testsys->getPosition(0).x()-0.5*i*DELTA*i*DELTA, DELTA); //tolerate 1st order err for now 
   };
+  delete testsys;
 }

@@ -4,6 +4,7 @@
 #endif
 
 #include <nbody/Simulation.h>
+#include <nbody/Integrator.h>
 
 #include <iostream>
 #include <fstream>
@@ -14,6 +15,15 @@
 using namespace std;
 
 // Globals.
+
+// TODO: add timeStep, Integration method to save/load.
+// Until then, next two lines are stubbed out
+
+// static nbody::integrator_t integrator = nbody::Euler;
+// static double timeStep = 1e-6; // time step of the integrator
+
+
+static int numSteps = 1e4; // number of time steps to evaluate the simulator
 static float scale = 1.0; // Size of the viewing box
 static size_t currentFrame = 0; // Current frame
 static const size_t totalFrame = 200; // Total number of frames
@@ -40,7 +50,7 @@ void *addSteps(void *) {
       for( size_t j = 0; j < nBodies; ++j ) {
         positions2[i].push_back( sim->getPosition(j) );
       }
-      sim->evolveSystem( 1e4, 0.000001 ); 
+      sim->evolveSystem( numSteps ); 
     }
   } else {
     positions.clear();
@@ -50,7 +60,7 @@ void *addSteps(void *) {
       for( size_t j = 0; j < nBodies; ++j ) {
         positions[i].push_back( sim->getPosition(j) );
       }
-      sim->evolveSystem( 1e4, 0.000001 ); 
+      sim->evolveSystem( numSteps ); 
     }
   }
   sim->saveRun(); 
@@ -262,7 +272,7 @@ int main(int argc, char *argv[]) {
       for( size_t j = 0; j < nBodies; ++j ) {
         positions[i].push_back( sim.getPosition(j) );
       }
-      sim.evolveSystem( 1e4, 0.000001 );      
+      sim.evolveSystem( numSteps );      
     }
     //sim.saveRun();    
   } catch( const std::exception &e ) {

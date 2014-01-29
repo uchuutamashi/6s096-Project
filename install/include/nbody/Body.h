@@ -10,16 +10,16 @@ namespace nbody {
   class Body {
     Vector3d _position;
     Vector3d _velocity;
-    Vector3d _force;
+    Vector3d _accel;
     double _mass;
   public:
-    Body() : _position{}, _velocity{}, _force{}, _mass{} {}
+    Body() : _position{}, _velocity{}, _accel{}, _mass{} {}
     inline Vector3d position() const { return _position; }
     inline Vector3d& position() { return _position; }
     inline Vector3d velocity() const { return _velocity; }
     inline Vector3d& velocity() { return _velocity; }
-    inline Vector3d force() const { return _force; } //acceleration
-    inline Vector3d& force() { return _force; }      //acceleration
+    inline Vector3d accel() const { return _accel; } 
+    inline Vector3d& accel() { return _accel; }      
     inline double mass() const { return _mass; }
     friend std::istream& operator>>( std::istream &is, Body &body );
     friend std::ostream& operator<<( std::ostream &os, const Body &body );
