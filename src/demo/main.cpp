@@ -144,11 +144,10 @@ void keyInput(unsigned char key, int , int )
          EXITING = true;
          exit(0);
          break;
-	  case ' ': 
-         if (isAnimate) isAnimate = 0;
-		 else isAnimate = 1;
+      case ' ': 
+         isAnimate = !isAnimate;
          glutPostRedisplay();
-		 break;
+         break;
       case 'x':
          Xangle += 5.0;
 		 if (Xangle > 360.0) Xangle -= 360.0;
@@ -249,6 +248,9 @@ int main(int argc, char *argv[]) {
   glutSpecialFunc(specialKeyInput);
   glutTimerFunc(5, animate, 1);
   glutMainLoop(); 
+   
+  EXITING=true;
+  return 0;
 }
 
 
