@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <pthread.h>
 #include <GL/glut.h>
 
 using namespace std;
@@ -15,25 +16,49 @@ using namespace std;
 // Globals.
 static float scale = 1.0; // Size of the viewing box
 static size_t currentFrame = 0; // Current frame
-static const size_t totalFrame = 50; // Total number of frames
+static const size_t totalFrame = 200; // Total number of frames
 static nbody::Simulation *simulation;
 static vector<vector<Vector3d>> positions; // Array storing position of bodies 
+static vector<vector<Vector3d>> positions2;
+volatile static bool onPositionList1 = true;
+volatile static bool creating = false;
+volatile static bool nextReady = false;
 static float Xangle = 0.0, Yangle = 0.0, Zangle = 0.0; // Angles to rotate scene
 static int isAnimate = 1; // Animated?
 static int animationPeriod = 100; // Time interval between frames
+static pthread_t first, second;
 
-void addSteps(vector<vector<Vector3d>> pos, nbody::Simulation *sim) {
+void *addSteps(void *) {
+  nbody::Simulation *sim;
+  sim = simulation;
   size_t nBodies = sim->numBodies();
+  if (onPositionList1) {
+    positions2.clear();
     for( size_t i = 0; i < totalFrame; ++i ) {
-  std::cout << "==EVOLUTION " << i + 1 << "\n";
-      sim->saveRun();
-      pos.push_back( vector<Vector3d>{} );
+      //sim->saveRun();
+      positions2.push_back( vector<Vector3d>{} );
       for( size_t j = 0; j < nBodies; ++j ) {
-        pos[i].push_back( sim->getPosition(j) );
+        positions2[i].push_back( sim->getPosition(j) );
       }
-      sim->evolveSystem( 1e4, 0.000001 );      
+      sim->evolveSystem( 1e4, 0.000001 ); 
     }
+  } else {
+    positions.clear();
+    for( size_t i = 0; i < totalFrame; ++i ) {
+      sim->saveRun();
+      positions.push_back( vector<Vector3d>{} );
+      for( size_t j = 0; j < nBodies; ++j ) {
+        positions[i].push_back( sim->getPosition(j) );
+      }
+      sim->evolveSystem( 1e4, 0.000001 ); 
+    }
+  }
   sim->saveRun(); 
+  creating = false;
+  nextReady = true;
+  cout << "Finished creation\n";
+
+  return NULL;
 }
 
 // Drawing routine.
@@ -68,15 +93,26 @@ void drawScene(void)
    glEnd();
 
    // Draw bodies
-   glColor3f(1.0, 1.0, 0.0); 
-   auto posIterator = positions[currentFrame].begin();
-   while(posIterator != positions[currentFrame].end() ) 
-   {	
-     glTranslatef((float)posIterator->x(),(float)posIterator->y() , (float)posIterator->z());
-     glutSolidSphere(0.05,20,20);
-     glTranslatef(-(float)posIterator->x(),-(float)posIterator->y() , -(float)posIterator->z());
-     posIterator++;
-   }
+   glColor3f(1.0, 1.0, 0.0);
+   if (onPositionList1) {
+      cout << "In list 1\n";
+      auto posIterator = positions[currentFrame].begin();
+      while( posIterator != positions[currentFrame].end() ) {  
+        glTranslatef((float)posIterator->x(),(float)posIterator->y() , (float)posIterator->z());
+        glutSolidSphere(0.05,20,20);
+        glTranslatef(-(float)posIterator->x(),-(float)posIterator->y() , -(float)posIterator->z());
+        posIterator++;
+      }
+   } else {
+      cout << "In list 2\n";
+      auto posIterator = positions2[currentFrame].begin();
+      while( posIterator != positions2[currentFrame].end() ) {  
+        glTranslatef((float)posIterator->x(),(float)posIterator->y() , (float)posIterator->z());
+        glutSolidSphere(0.05,20,20);
+        glTranslatef(-(float)posIterator->x(),-(float)posIterator->y() , -(float)posIterator->z());
+        posIterator++;
+     }
+   } 
 
    glutSwapBuffers();
 }
@@ -86,9 +122,25 @@ void animate(int)
 {
    if(isAnimate){
      ++currentFrame;
-     if( currentFrame >= totalFrame ) currentFrame = 0;
-     if (totalFrame - currentFrame < 25) {
-      addSteps(positions, simulation);
+     cout << "Steps left: " << totalFrame - currentFrame << "\n";
+     if( currentFrame == totalFrame && nextReady) {
+        onPositionList1 = 1 - onPositionList1; //Flip bool
+        nextReady = false;
+        currentFrame = 0;
+     }
+
+     if (totalFrame - currentFrame < 75 && !creating && !nextReady) {
+      creating = 1;
+      cout << "Creating\n";
+      if (onPositionList1) {
+        cout << "Starting thread\n";
+        pthread_create(&first, NULL, addSteps, NULL);
+        //std::thread first (addSteps, positions2, simulation); 
+      } else {
+        pthread_create(&second, NULL, addSteps, NULL);
+        //std::thread second (addSteps, positions, simulation);
+      }
+      //addSteps(positions, simulation);
      }
    }
 
@@ -212,7 +264,7 @@ int main(int argc, char *argv[]) {
       }
       sim.evolveSystem( 1e4, 0.000001 );      
     }
-    sim.saveRun();    
+    //sim.saveRun();    
   } catch( const std::exception &e ) {
     std::cerr << "Error: " << e.what() << "\n";
     return 1;
