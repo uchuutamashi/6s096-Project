@@ -1,4 +1,4 @@
-#include <nbody/constants.h>
+#include <nbody/Constants.h>
 
 namespace nbody {
   const size_t MAX_BODIES_RECOMMENDED = 10000;

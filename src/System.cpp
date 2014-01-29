@@ -1,4 +1,4 @@
-#include <nbody/constants.h>
+#include <nbody/Constants.h>
 #include <nbody/System.h>
 
 #include <fstream>
@@ -7,6 +7,16 @@
 #include <iomanip>
 
 namespace nbody {
+
+  System::System( std::istream &input ) : _body{}, _integrator{} {
+    readState( input );
+    _integrator.resizeState( _body.size() );
+  }
+
+  /*System::System( std::string filename ) : _body{}, _integrator{} {
+    readState( filename );
+    _integrator.resizeState( _body.size() );
+  } */
 
   void System::integrateSystem( ) {
     _integrator.doStep(_body);

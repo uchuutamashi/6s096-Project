@@ -108,11 +108,13 @@ void drawScene(void)
 void animate(int)
 {
    if( isAnimate && threadFrame-currentFrame > padding ) {
-     ++currentFrame;
-     if( currentFrame >= totalFrame ) currentFrame=0;
+    ++currentFrame;
+    if( currentFrame >= totalFrame ) {
+      currentFrame=0;
+    }
    }
    //cout << currentFrame << "	" << threadFrame << endl;
-   glutTimerFunc(animationPeriod, animate, 1);
+   glutTimerFunc( animationPeriod, animate, 1 );
    glutPostRedisplay();
 }
 
@@ -121,24 +123,24 @@ void setup(void)
 {
    glClearColor(0.0, 0.0, 0.0, 0.0); 
    glEnable(GL_DEPTH_TEST); // Enable depth testing
-   glOrtho(-scale, scale, -scale, scale, -scale, scale); 
+   glOrtho( -scale, scale, -scale, scale, -scale, scale ); 
    //glutFullScreen();
 }
 
 // OpenGL window reshape routine
-void resize(int w, int h)
+void resize( int w, int h )
 {
-   glViewport(0, 0, (GLsizei)w, (GLsizei)h); 
-   glMatrixMode(GL_PROJECTION);
+   glViewport( 0, 0, (GLsizei)w, (GLsizei)h ); 
+   glMatrixMode( GL_PROJECTION );
    glLoadIdentity();
 
-   glMatrixMode(GL_MODELVIEW);
+   glMatrixMode( GL_MODELVIEW );
 }
 
 // Keyboard input processing routine
-void keyInput(unsigned char key, int , int )
+void keyInput( unsigned char key, int , int )
 {
-   switch(key) 
+   switch( key ) 
    {
       case 27:
          EXITING = true;
@@ -205,7 +207,7 @@ void keyInput(unsigned char key, int , int )
 }
 
 // Callback routine for non-ASCII key entry
-void specialKeyInput(int key, int , int )
+void specialKeyInput( int key, int , int )
 {
    if (key == GLUT_KEY_DOWN) animationPeriod += 5;
    if( key == GLUT_KEY_UP) if (animationPeriod > 5) animationPeriod -= 5;

@@ -1,1 +1,1 @@
-Constants.o build/nbody/Constants.d : src/Constants.cpp install/include/nbody/constants.h
+Constants.o build/nbody/Constants.d : src/Constants.cpp include/nbody/Constants.h

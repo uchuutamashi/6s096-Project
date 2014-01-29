@@ -12,6 +12,18 @@ public:
   inline T x() const { return _x; }
   inline T y() const { return _y; }
   inline T z() const { return _z; }
+  inline const Vector3<T>& operator+=( const Vector3<T>& rhs) {
+    _x += rhs.x();
+    _y += rhs.y();
+    _z += rhs.z();
+    return *this;
+  }
+  inline const Vector3<T>& operator*=( const double& rhs) {
+    _x *= rhs;
+    _y += rhs;
+    _z += rhs;
+    return *this;
+  }
   T norm() const;
   T normsq() const;
   friend std::istream& operator>>( std::istream &is, Vector3<T> &vec ) {

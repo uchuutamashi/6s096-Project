@@ -20,21 +20,23 @@ typedef std::vector<Body> tBodyVec;
     System( const System &sys ) = delete;
     System& operator=( const System &sys ) = delete;
   public:
-    System( size_t N ) : _body( N ), _integrator{} { initRandomState(); }
+    System( size_t N ) : _body( N ), _integrator{ N } { initRandomState(); }
     System( tBodyVec bodies) : _body{ bodies }, _integrator{} { }
     System( tBodyVec bodies, integrator_t integratorType) : _body{ bodies }, _integrator{ integratorType } { }
     System( tBodyVec bodies, integrator_t integratorType, double timeStep) : 
     _body{ bodies }, 
-    _integrator{ integratorType, timeStep } {
+    _integrator{ integratorType, timeStep, bodies.size() } {
     }   
-    System( std::istream &input ) : _body{}, _integrator{} { readState( input ); }
-    System( std::string filename ) : _body{}, _integrator{} { readState( filename ); }
+    System( std::istream &input );
+    //TODO: reading from filename string
+    //System( std::string filename );
     ~System() { }
     inline size_t numBodies() const{ return _body.size(); }
     void integrateSystem( );
     Vector3d getPosition( size_t id ) const;
     void readState( std::istream &input );
-    void readState( std::string filename );
+    // TODO: reading from filename string
+    //void readState( std::string filename );
     void writeState( std::ostream &output ) const;
     void writeState( std::string filename ) const;
     void initRandomState();
