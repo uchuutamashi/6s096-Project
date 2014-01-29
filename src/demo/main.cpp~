@@ -53,7 +53,7 @@ void drawScene(void)
    while(posIterator != positions[currentFrame].end() ) 
    {	
      glTranslatef((float)posIterator->x(),(float)posIterator->y() , (float)posIterator->z());
-     glutSolidSphere(0.01,20,20);
+     glutSolidSphere(0.05,20,20);
      glTranslatef(-(float)posIterator->x(),-(float)posIterator->y() , -(float)posIterator->z());
      posIterator++;
    }
