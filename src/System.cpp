@@ -1,6 +1,5 @@
 #include <nbody/constants.h>
 #include <nbody/System.h>
-#include <nbody/Integrator.h>
 
 #include <fstream>
 #include <stdexcept>

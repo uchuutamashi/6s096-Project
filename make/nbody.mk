@@ -18,7 +18,7 @@ OBJECTS_PROJ := \
 	$(BUILD_DIR_PROJ)/Body.o \
 	$(BUILD_DIR_PROJ)/System.o \
 	$(BUILD_DIR_PROJ)/Simulation.o \
-	$(BUILD_DIR_PROJ)/constants.o \
+	$(BUILD_DIR_PROJ)/Constants.o \
 	$(BUILD_DIR_PROJ)/Integrator.o \
 	#$(BUILD_DIR_PROJ)/add.o \
 	#$(BUILD_DIR_PROJ)/any.o \
