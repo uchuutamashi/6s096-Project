@@ -12,7 +12,13 @@ $(TARGET_PROJ_TEST) : $(INSTALL_DIR)/lib/lib$(PROJ_NAME).a
 ## Link our nbody-test.x executable with libnbody.a and gtest
 ## XXX ATTENTION ATTENTION ATTTENTION MACOSX USERS! XXX
 ## If -lgov is giving you problems with clang, try replacing it with --coverage
+ifeq ($(OS), Darwin)
+# Mac
+$(TARGET_PROJ_TEST) : LDFLAGS += --coverage $(INSTALL_DIR)/lib/lib$(PROJ_NAME).a
+else
+# Else
 $(TARGET_PROJ_TEST) : LDFLAGS += -lgcov $(INSTALL_DIR)/lib/lib$(PROJ_NAME).a
+endif
 
 ## Add lots more unit tests to this list!
 OBJECTS_PROJ_TEST := \
