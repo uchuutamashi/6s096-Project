@@ -20,6 +20,11 @@ void drawScene(void)
 {
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glLoadIdentity();
+
+   // Rotate scene.
+   glRotatef(Zangle, 0.0, 0.0, 1.0);
+   glRotatef(Yangle, 0.0, 1.0, 0.0);
+   glRotatef(Xangle, 1.0, 0.0, 0.0);
    
    glColor3f(0.0, 0.0, 0.0); 
    
@@ -50,7 +55,8 @@ void setup(void)
 {
    glClearColor(1.0, 1.0, 1.0, 0.0); 
    glEnable(GL_DEPTH_TEST); // Enable depth testing.
-   glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+   glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0); 
+   glutFullScreen();
 }
 
 // OpenGL window reshape routine.
