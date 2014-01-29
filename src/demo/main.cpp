@@ -16,10 +16,25 @@ using namespace std;
 static float scale = 1.0; // Size of the viewing box
 static size_t currentFrame = 0; // Current frame
 static const size_t totalFrame = 50; // Total number of frames
-static vector<Vector3d> positions[totalFrame]; // Array storing position of bodies 
+static nbody::Simulation *simulation;
+static vector<vector<Vector3d>> positions; // Array storing position of bodies 
 static float Xangle = 0.0, Yangle = 0.0, Zangle = 0.0; // Angles to rotate scene
 static int isAnimate = 1; // Animated?
 static int animationPeriod = 100; // Time interval between frames
+
+void addSteps(vector<vector<Vector3d>> pos, nbody::Simulation *sim) {
+  size_t nBodies = sim->numBodies();
+    for( size_t i = 0; i < totalFrame; ++i ) {
+  std::cout << "==EVOLUTION " << i + 1 << "\n";
+      sim->saveRun();
+      pos.push_back( vector<Vector3d>{} );
+      for( size_t j = 0; j < nBodies; ++j ) {
+        pos[i].push_back( sim->getPosition(j) );
+      }
+      sim->evolveSystem( 1e4, 0.000001 );      
+    }
+  sim->saveRun(); 
+}
 
 // Drawing routine.
 void drawScene(void)
@@ -72,6 +87,9 @@ void animate(int)
    if(isAnimate){
      ++currentFrame;
      if( currentFrame >= totalFrame ) currentFrame = 0;
+     if (totalFrame - currentFrame < 25) {
+      addSteps(positions, simulation);
+     }
    }
 
    glutTimerFunc(animationPeriod, animate, 1);
@@ -183,10 +201,12 @@ int main(int argc, char *argv[]) {
   try {
     std::ifstream input{ "resources/nbody/binary-system-simple.txt" };
     nbody::Simulation sim{input};
+    simulation = &sim;
     size_t nBodies = sim.numBodies();
     for( size_t i = 0; i < totalFrame; ++i ) {
       std::cout << "==EVOLUTION " << i + 1 << "\n";
       sim.saveRun();
+      positions.push_back(vector<Vector3d>{});
       for( size_t j = 0; j < nBodies; ++j ) {
         positions[i].push_back( sim.getPosition(j) );
       }
