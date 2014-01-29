@@ -8,19 +8,19 @@
 namespace nbody {
 
   class Body {
-    Vector3f _position;
-    Vector3f _velocity;
-    Vector3f _force;
-    float _mass;
+    Vector3d _position;
+    Vector3d _velocity;
+    Vector3d _force;
+    double _mass;
   public:
     Body() : _position{}, _velocity{}, _force{}, _mass{} {}
-    inline Vector3f position() const { return _position; }
-    inline Vector3f& position() { return _position; }
-    inline Vector3f velocity() const { return _velocity; }
-    inline Vector3f& velocity() { return _velocity; }
-    inline Vector3f force() const { return _force; } //acceleration
-    inline Vector3f& force() { return _force; }      //acceleration
-    inline float mass() const { return _mass; }
+    inline Vector3d position() const { return _position; }
+    inline Vector3d& position() { return _position; }
+    inline Vector3d velocity() const { return _velocity; }
+    inline Vector3d& velocity() { return _velocity; }
+    inline Vector3d force() const { return _force; } //acceleration
+    inline Vector3d& force() { return _force; }      //acceleration
+    inline double mass() const { return _mass; }
     friend std::istream& operator>>( std::istream &is, Body &body );
     friend std::ostream& operator<<( std::ostream &os, const Body &body );
   };

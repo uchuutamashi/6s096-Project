@@ -7,9 +7,9 @@ using namespace nbody;
 
 TEST( physicsTest, constAccel ) {
   Body *testobj = new Body;
-  testobj->position() = Vector3f{0,0,0};
-  testobj->velocity() = Vector3f{0,0,0};
-  testobj->force()    = Vector3f{1,0,0};
+  testobj->position() = Vector3d{0,0,0};
+  testobj->velocity() = Vector3d{0,0,0};
+  testobj->force()    = Vector3d{1,0,0};
   
   System *testsys = new System{1,testobj};
 

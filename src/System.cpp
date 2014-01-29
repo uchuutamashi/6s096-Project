@@ -9,17 +9,17 @@
 
 namespace nbody {
 
-  inline void System::interactBodies( size_t i, size_t j, float softFactor, Vector3f &acc ) const {
-    Vector3f r = _body[j].position() - _body[i].position();
-    float distance = r.norm() + softFactor;
-    float invDist = 1.0f / distance;
-    float invDistCubed = cube( invDist );
+  inline void System::interactBodies( size_t i, size_t j, double softFactor, Vector3d &acc ) const {
+    Vector3d r = _body[j].position() - _body[i].position();
+    double distance = r.norm() + softFactor;
+    double invDist = 1.0 / distance;
+    double invDistCubed = cube( invDist );
     acc = acc + NEWTON_G * _body[j].mass() * invDistCubed * r;
   }
 
   void System::computeGravitation() {
     for( size_t i = 0; i < _nBodies; ++i ) {
-      Vector3f acc{ 0.0f, 0.0f, 0.0f };
+      Vector3d acc{ 0.0, 0.0, 0.0 };
       for( size_t j = 0; j < _nBodies; ++j ) {
         if( i != j ) {
           interactBodies( i, j, _softFactor, acc );
@@ -29,8 +29,8 @@ namespace nbody {
     }
   }
 
-  void System::integrateSystem( float dt ) {
-    Vector3f r, v, a;
+  void System::integrateSystem( double dt ) {
+    Vector3d r, v, a;
     for( size_t i = 0; i < _nBodies; ++i ) {
       r = _body[i].position();
       v = _body[i].velocity();
@@ -45,12 +45,12 @@ namespace nbody {
     }
   }
 
-  void System::update( float dt ) {
+  void System::update( double dt ) {
     computeGravitation();
     integrateSystem( dt );
   }
 
-  Vector3f System::getPosition( size_t id ) const{
+  Vector3d System::getPosition( size_t id ) const{
     if( id >= _nBodies ) {
       throw std::out_of_range("ID is larger than total number of bodies");
     }

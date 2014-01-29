@@ -10,7 +10,7 @@ using namespace std;
 // Globals.
 static size_t currentFrame = 0; //Current frame
 static const size_t totalFrame = 50; //Total number of frames
-static vector<Vector3f> positions[totalFrame]; //array storing position of bodies 
+static vector<Vector3d> positions[totalFrame]; //array storing position of bodies 
 static float Xangle = 0.0, Yangle = 0.0, Zangle = 0.0; // Angles to rotate scene.
 static int isAnimate = 0; // Animated?
 static int animationPeriod = 100; // Time interval between frames.
@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
       std::cout << "==EVOLUTION " << i + 1 << "\n";
       sim.saveRun();
       for( size_t j = 0; j < nBodies; ++j ) {
-        positions[i].push_back(sim.getPosition(j));
+        positions[i].push_back( sim.getPosition(j) );
       }
       sim.evolveSystem( 1e4, 0.000001 );      
     }

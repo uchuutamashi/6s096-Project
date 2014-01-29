@@ -32,7 +32,7 @@ namespace nbody {
     }
   }
 
-  void Simulation::evolveSystem( int nSteps, float dt ) {
+  void Simulation::evolveSystem( int nSteps, double dt ) {
     if( _system != nullptr ) {
       for( int step = 0; step < nSteps; ++step ) {
         _system->update( dt );
