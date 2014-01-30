@@ -20,8 +20,8 @@ public:
   }
   inline const Vector3<T>& operator*=( const double& rhs) {
     _x *= rhs;
-    _y += rhs;
-    _z += rhs;
+    _y *= rhs;
+    _z *= rhs;
     return *this;
   }
   T norm() const;

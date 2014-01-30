@@ -13,6 +13,7 @@ namespace nbody {
     _integrator.resizeState( _body.size() );
   }
 
+  // TODO: reading from filename string
   /*System::System( std::string filename ) : _body{}, _integrator{} {
     readState( filename );
     _integrator.resizeState( _body.size() );
@@ -23,6 +24,7 @@ namespace nbody {
   }
 
   void System::update( ) {
+    integrateSystem( );
   }
 
   Vector3d System::getPosition( size_t id ) const{

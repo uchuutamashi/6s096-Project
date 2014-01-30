@@ -1,3 +1,4 @@
-Simulation.o build/nbody/Simulation.d : src/Simulation.cpp include/nbody/Simulation.h \
- include/nbody/System.h include/nbody/Integrator.h include/nbody/Body.h \
- include/nbody/Vector3.h include/nbody/Constants.h
+Simulation.o build/nbody/Simulation.d : src/Simulation.cpp install/include/nbody/Simulation.h \
+ install/include/nbody/System.h install/include/nbody/Integrator.h \
+ install/include/nbody/Body.h install/include/nbody/Vector3.h \
+ install/include/nbody/Constants.h

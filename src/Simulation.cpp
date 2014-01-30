@@ -35,7 +35,7 @@ namespace nbody {
   void Simulation::evolveSystem( int nSteps ) {
     if( _system != nullptr ) {
       for( int step = 0; step < nSteps; ++step ) {
-        _system->update( );
+        _system->update();
       }
     } else {
       throw std::runtime_error( "Tried to evolve simulation with no system!" );
