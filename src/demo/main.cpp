@@ -219,6 +219,8 @@ int main(int argc, char *argv[]) {
   // Calculate positions and store in positions array
   try {
     ifstream input{ "resources/nbody/binary-system-simple.txt" };
+    //ifstream input{ "resources/nbody/binary-system-simpleRK2.txt"};
+    //ifstream input{ "resources/nbody/binary-system-simpleRK4.txt"};
     sim = new nbody::Simulation{input};
     
     //Fill in some starting frames

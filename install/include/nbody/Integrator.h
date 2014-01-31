@@ -9,7 +9,7 @@
 namespace nbody {
 
 typedef std::vector<Body> tBodyVec;
-enum integrator_t {Euler=1, RK2, RK4}; // integrator type
+enum integrator_t {Euler=1, RK2=2, RK4=3}; // integrator type
 
 class Integrator {
 	integrator_t _integratorType;
