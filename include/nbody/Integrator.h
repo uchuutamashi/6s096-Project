@@ -9,7 +9,7 @@
 namespace nbody {
 
 typedef std::vector<Body> tBodyVec;
-enum integrator_t {Euler, RK2, RK4}; // integrator type
+enum integrator_t {Euler=1, RK2, RK4}; // integrator type
 
 class Integrator {
 	integrator_t _integratorType;
@@ -36,8 +36,8 @@ public:
 	Integrator( integrator_t integratorType, double time, size_t numBodies );
 	inline double timeStep() const { return _timeStep; }
 	inline double& timeStep() { return _timeStep; }
-	inline integrator_t integrator() const { return _integratorType; }
-	inline integrator_t& integrator() { return _integratorType; }
+	inline integrator_t integrator_type() const { return _integratorType; }
+	inline integrator_t& integrator_type() { return _integratorType; }
 	void resizeState( size_t numBodies );
 	void saveState ( tBodyVec& bodies ); // saves current body params into state member variables
 	void restoreState ( tBodyVec& bodies ); // restore the state to bodies (excluding acc)

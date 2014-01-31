@@ -44,6 +44,19 @@ namespace nbody {
     for( size_t i = 0; i < N; ++i ) {
       input >> _body[i];
     }
+    input.ignore(256, '#'); // 256 is just a dummy value
+    int integrator;
+    input >> integrator;
+    _integrator.integrator_type() = ( integrator_t ) integrator;
+    input >> _integrator.timeStep();
+  }
+
+  void System::readState( std::string filename ) {
+    std::filebuf fb;
+    if ( fb.open ( filename,std::ios::in ) ) {
+      std::istream is( &fb );
+      readState( is );
+    }
   }
 
   void System::writeState( std::ostream &output ) const {
@@ -51,6 +64,16 @@ namespace nbody {
     for( size_t i = 0; i < _body.size(); ++i ) {
       output << _body[i] << "\n";
     }
+    // write out the integrator type, time step after "# ""
+    output << "# " << _integrator.integrator_type()  << " " << _integrator.timeStep() << "\n";
+  }
+
+  void System::writeState( std::string filename ) const {
+    std::filebuf fb;
+    if ( fb.open ( filename,std::ios::out ) ) {
+      std::ostream os( &fb );
+      writeState( os );
+    }    
   }
 
 } // namespace nbody

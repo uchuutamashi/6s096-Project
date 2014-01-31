@@ -28,15 +28,13 @@ typedef std::vector<Body> tBodyVec;
     _integrator{ integratorType, timeStep, bodies.size() } {
     }   
     System( std::istream &input );
-    //TODO: reading from filename string
-    //System( std::string filename );
+    System( std::string filename );
     ~System() { }
     inline size_t numBodies() const{ return _body.size(); }
     void integrateSystem( );
     Vector3d getPosition( size_t id ) const;
     void readState( std::istream &input );
-    // TODO: reading from filename string
-    //void readState( std::string filename );
+    void readState( std::string filename );
     void writeState( std::ostream &output ) const;
     void writeState( std::string filename ) const;
     void initRandomState();
