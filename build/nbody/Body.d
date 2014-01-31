@@ -1,2 +1,1 @@
-Body.o build/nbody/Body.d : src/Body.cpp install/include/nbody/Body.h \
- install/include/nbody/Vector3.h
+Body.o build/nbody/Body.d : src/Body.cpp include/nbody/Body.h include/nbody/Vector3.h

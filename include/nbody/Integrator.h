@@ -6,7 +6,6 @@
 
 #include <vector>
 
-
 namespace nbody {
 
 typedef std::vector<Body> tBodyVec;
@@ -28,7 +27,7 @@ class Integrator {
 	    double distance = r.norm() + softFactor;
 	    double invDist = 1.0 / distance;
 	    double invDistCubed = cube( invDist );
-	    bodies[i].accel() = bodies[i].accel() + NEWTON_G * bodies[j].mass() * invDistCubed * r;    	
+	    bodies[i].accel() = bodies[i].accel() + NEWTON_G * bodies[j].mass() * invDistCubed * r;   	
     }
     void computeAccel( tBodyVec& bodies );
 public:

@@ -21,6 +21,7 @@ namespace nbody {
     inline Vector3d accel() const { return _accel; } 
     inline Vector3d& accel() { return _accel; }      
     inline double mass() const { return _mass; }
+    inline double& mass() { return _mass; }
     friend std::istream& operator>>( std::istream &is, Body &body );
     friend std::ostream& operator<<( std::ostream &os, const Body &body );
   };

@@ -61,6 +61,15 @@ TEST( vectorTest, add ) {
   ASSERT_FLOAT_EQ( v3.z(), 0.f);  
 }
 
+TEST( vectorTest, subtract ) {
+  auto v1 = Vector3f{1.f, 2.f, 3.f};
+  auto v2 = Vector3f{-1.f, -2.f, -3.f};
+  auto v3 = v1 - v2;
+  ASSERT_FLOAT_EQ( v3.x(), 2.f);
+  ASSERT_FLOAT_EQ( v3.y(), 4.f);
+  ASSERT_FLOAT_EQ( v3.z(), 6.f);  
+}
+
 TEST( vectorTest, multiply ) {
   auto v1 = Vector3f{1.f, 2.f, 3.f};
   auto v2 = 3.f * v1;
