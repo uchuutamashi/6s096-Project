@@ -18,7 +18,7 @@ public:
     _z += rhs.z();
     return *this;
   }
-  inline const Vector3<T>& operator*=( const double& rhs) {
+  inline const Vector3<T>& operator*=( const T& rhs) {
     _x *= rhs;
     _y *= rhs;
     _z *= rhs;
