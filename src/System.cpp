@@ -34,6 +34,13 @@ namespace nbody {
     return _body[id].position();
   }
 
+  double System::getMass( size_t id ) const{
+    if( id >= _body.size() ) {
+      throw std::out_of_range("ID is larger than total number of bodies");
+    }
+    return _body[id].mass();
+  }
+
   void System::readState( std::istream &input ) {
     size_t N; // number of bodies
     input >> N;
