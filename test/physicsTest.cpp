@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #define DELTA 1e-4
-#define N 2226
+#define N 2226 // the 2226 is not important; >= 2226 is what matters here
 #define TOL 0.02 // tolerance
 using namespace nbody;
 typedef std::vector<Body> tBodyVec;

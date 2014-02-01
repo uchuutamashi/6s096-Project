@@ -150,7 +150,7 @@ void animate( int )
 // Initialization routine
 void setup( void ) 
 {
-   glClearColor(0.0, 0.0, 0.0, 0.0); 
+   glClearColor( 0.0, 0.0, 0.0, 0.0 ); 
    glEnable( GL_DEPTH_TEST ); // Enable depth testing
    glOrtho( -scale, scale, -scale, scale, -scale, scale ); 
    //glutFullScreen();
