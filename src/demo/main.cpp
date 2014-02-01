@@ -69,14 +69,16 @@ void output( float x, float y, float r, float g, float b, void * font, const cha
 
 void drawText() {
   if ( showHelp ) {
-    output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "NBody Simulation |" );
-    output( -0.55, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | " );
-    output( -0.15, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis | " );
-    output(  0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "esc to exit" );
-    output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "xX, yY, zZ to rotate |" );
-    output( -0.48, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |" );
-    output( -0.11, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom | " );
-    output( 0.16, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "up/down to change speed" );
+    const char* topMsg = "NBody Simulation | " 
+                    "h to toggle help | "
+                    "r to reset axis | "
+                    "esc to exit";
+    const char* btmMsg = "xX, yY, zZ to rotate | "
+                    "w to toggle axis | "
+                    "+/- to zoom | " 
+                    "up/down to change speed";
+    output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, topMsg );
+    output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, btmMsg );
   }
 }
 
