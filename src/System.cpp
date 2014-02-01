@@ -34,6 +34,13 @@ namespace nbody {
     return _body[id].position();
   }
 
+  Vector3d System::getColor( size_t id ) const{
+    if( id >= _body.size() ) {
+      throw std::out_of_range("ID is larger than total number of bodies");
+    }
+    return _body[id].color();
+  }
+
   double System::getMass( size_t id ) const{
     if( id >= _body.size() ) {
       throw std::out_of_range("ID is larger than total number of bodies");

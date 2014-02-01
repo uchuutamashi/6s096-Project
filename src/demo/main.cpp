@@ -7,6 +7,7 @@
 #include <nbody/Integrator.h>
 
 #include <cstring>
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -120,12 +121,17 @@ void drawScene( void )
    }
 
    // Draw bodies
-   glColor3f( 1.0, 1.0, 0.0 );
+   // glColor3f( 1.0, 1.0, 0.0 );
    auto posIterator = positions[currentFrame].begin();
+   size_t id = 0;
+   Vector3d color;
    while( posIterator != positions[currentFrame].end() ) {  
+     color = sim->getColor(id);
+     glColor3f( (float) color.x(), (float) color.y(), (float) color.z() );
      glTranslatef( ( float ) posIterator->x(), ( float ) posIterator->y(), ( float ) posIterator->z() );
-     glutSolidSphere(0.05,20,20);
+     glutSolidSphere(0.05*cbrt(sim->getMass(id)),20,20);
      glTranslatef( -( float ) posIterator->x(), -( float ) posIterator->y() , -( float ) posIterator->z());
+     id++;
      posIterator++;
    } 
 
