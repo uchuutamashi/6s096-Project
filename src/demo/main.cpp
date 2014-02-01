@@ -37,6 +37,7 @@ volatile static size_t threadFrame = 0; // Frame that the thread is processing
 static const size_t padding = 100; // #frames around currentFrame that shouldn't be touched by the threads
 
 static bool showAxes = true; 
+static bool showHelp = true;
 static float scale = 1.0; // Size of the viewing box
 static float Xangle = 0.0, Yangle = 0.0, Zangle = 0.0; // Angles to rotate scene
 static int isAnimate = 1; // Animated?
@@ -58,11 +59,35 @@ void *addSteps(void *) {
   return NULL;
 }
 
+void output(float x, float y, float r, float g, float b, void * font, const char *string)
+{
+  glColor3f( r, g, b );
+  glRasterPos2f(x, y);
+  int len, i;
+  len = (int)strlen(string);
+  for (i = 0; i < len; i++) {
+    glutBitmapCharacter(font, string[i]);
+  }
+}
+
+void drawText() {
+  if (showHelp) {
+    output(-0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "NBody Simulation |");
+    output(-0.35, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | ");
+    output(0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis");
+    output(-0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "xX, yY, zZ to rotate |");
+    output(-0.2, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |");
+    output(0.4, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom");
+  }
+}
+
 // Drawing routine.
 void drawScene(void)
 {
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
    glLoadIdentity();
+   drawText();
 
    // Zoom scene    
    glOrtho(-scale, scale, -scale, scale, -scale, scale); 
@@ -101,6 +126,7 @@ void drawScene(void)
      posIterator++;
    } 
 
+   //drawText();
    glutSwapBuffers();
 }
 
@@ -190,6 +216,10 @@ void keyInput( unsigned char key, int , int )
          showAxes=!showAxes;
          glutPostRedisplay();
          break;
+      case 'h':
+        showHelp = !showHelp;
+        glutPostRedisplay();
+        break;
       case '+':
          if(scale>0.1){
            scale -=0.1;
