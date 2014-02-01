@@ -44,9 +44,9 @@ static float Xangle = 0.0, Yangle = 0.0, Zangle = 0.0; // Angles to rotate scene
 static int isAnimate = 1; // Animated?
 static int animationPeriod = 100; // Time interval between frames
 
-void *addSteps(void *) {
+void *addSteps( void * ) {
   while( !EXITING ) {
-    if( currentFrame > threadFrame+padding || currentFrame < threadFrame) {
+    if( currentFrame > threadFrame+padding || currentFrame < threadFrame ) {
       positions[threadFrame].clear();
       for( size_t i=0; i < sim->numBodies(); ++i ) {
         positions[threadFrame].push_back( sim->getPosition( i ) );
@@ -54,76 +54,78 @@ void *addSteps(void *) {
       sim->evolveSystem( numSteps ); 
       sim->saveRun();
       threadFrame++;
-      if( threadFrame >= totalFrame) threadFrame=0;
+      if( threadFrame >= totalFrame ) {
+        threadFrame=0;
+      }
     }
   }
   return NULL;
 }
 
-void output(float x, float y, float r, float g, float b, void * font, const char *string)
+void output( float x, float y, float r, float g, float b, void * font, const char *string )
 {
   glColor3f( r, g, b );
-  glRasterPos2f(x, y);
+  glRasterPos2f( x, y );
   int len, i;
-  len = (int)strlen(string);
-  for (i = 0; i < len; i++) {
-    glutBitmapCharacter(font, string[i]);
+  len = ( int ) strlen( string );
+  for ( i = 0; i < len; i++ ) {
+    glutBitmapCharacter( font, string[i] );
   }
 }
 
 void drawText() {
-  if (showHelp) {
-    output(-0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "NBody Simulation |");
-    output(-0.35, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | ");
-    output(0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis");
-    output(-0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "xX, yY, zZ to rotate |");
-    output(-0.2, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |");
-    output(0.4, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom");
+  if ( showHelp ) {
+    output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "NBody Simulation |" );
+    output( -0.35, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | " );
+    output( 0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis" );
+    output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "xX, yY, zZ to rotate |" );
+    output( -0.2, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |" );
+    output( 0.4, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom" );
   }
 }
 
 // Drawing routine.
-void drawScene(void)
+void drawScene( void )
 {
-   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
    glLoadIdentity();
    drawText();
 
    // Zoom scene    
-   glOrtho(-scale, scale, -scale, scale, -scale, scale); 
+   glOrtho( -scale, scale, -scale, scale, -scale, scale ); 
 
    // Rotate scene
-   glRotatef(Zangle, 0.0, 0.0, 1.0);
-   glRotatef(Yangle, 0.0, 1.0, 0.0);
-   glRotatef(Xangle, 1.0, 0.0, 0.0);
+   glRotatef( Zangle, 0.0, 0.0, 1.0 );
+   glRotatef( Yangle, 0.0, 1.0, 0.0 );
+   glRotatef( Xangle, 1.0, 0.0, 0.0 );
    
-   if( showAxes ){
+   if( showAxes ) {
    // Draw coordinate axes
-     glColor3f(1.0, 0.0, 0.0); 
-     glBegin(GL_LINES);
-       glVertex3f(0.0,0.0,0.0);
-       glVertex3f(0.5,0.0,0.0);
+     glColor3f( 1.0, 0.0, 0.0 ); 
+     glBegin( GL_LINES );
+       glVertex3f(0.0, 0.0, 0.0);
+       glVertex3f(0.5, 0.0, 0.0);
      glEnd();
-     glColor3f(0.0, 1.0, 0.0); 
-     glBegin(GL_LINES);
-       glVertex3f(0.0,0.0,0.0);
-       glVertex3f(0.0,0.5,0.0);
+     glColor3f( 0.0, 1.0, 0.0 ); 
+     glBegin( GL_LINES );
+       glVertex3f( 0.0, 0.0, 0.0 );
+       glVertex3f( 0.0, 0.5, 0.0 );
      glEnd();
-     glColor3f(0.0, 0.0, 1.0); 
-     glBegin(GL_LINES);
-       glVertex3f(0.0,0.0,0.0);
-       glVertex3f(0.0,0.0,0.5);
+     glColor3f( 0.0, 0.0, 1.0 ); 
+     glBegin( GL_LINES );
+       glVertex3f( 0.0, 0.0, 0.0 );
+       glVertex3f( 0.0, 0.0, 0.5 );
      glEnd();
    }
 
    // Draw bodies
-   glColor3f(1.0, 1.0, 0.0);
+   glColor3f( 1.0, 1.0, 0.0 );
    auto posIterator = positions[currentFrame].begin();
    while( posIterator != positions[currentFrame].end() ) {  
-     glTranslatef((float)posIterator->x(),(float)posIterator->y() , (float)posIterator->z());
+     glTranslatef( ( float ) posIterator->x(), ( float ) posIterator->y(), ( float ) posIterator->z() );
      glutSolidSphere(0.05,20,20);
-     glTranslatef(-(float)posIterator->x(),-(float)posIterator->y() , -(float)posIterator->z());
+     glTranslatef( -( float ) posIterator->x(), -( float ) posIterator->y() , -( float ) posIterator->z());
      posIterator++;
    } 
 
@@ -132,7 +134,7 @@ void drawScene(void)
 }
 
 // Timer function
-void animate(int)
+void animate( int )
 {
    if( isAnimate && threadFrame-currentFrame > padding ) {
     ++currentFrame;
@@ -146,10 +148,10 @@ void animate(int)
 }
 
 // Initialization routine
-void setup(void) 
+void setup( void ) 
 {
    glClearColor(0.0, 0.0, 0.0, 0.0); 
-   glEnable(GL_DEPTH_TEST); // Enable depth testing
+   glEnable( GL_DEPTH_TEST ); // Enable depth testing
    glOrtho( -scale, scale, -scale, scale, -scale, scale ); 
    //glutFullScreen();
 }
@@ -157,7 +159,7 @@ void setup(void)
 // OpenGL window reshape routine
 void resize( int w, int h )
 {
-   glViewport( 0, 0, (GLsizei)w, (GLsizei)h ); 
+   glViewport( 0, 0, ( GLsizei ) w, ( GLsizei ) h ); 
    glMatrixMode( GL_PROJECTION );
    glLoadIdentity();
 
@@ -168,85 +170,103 @@ void resize( int w, int h )
 void keyInput( unsigned char key, int , int )
 {
    switch( key ) 
-   {
+    {
       case 27:
-         EXITING = true;
-         exit(0);
-         break;
+        EXITING = true;
+        exit( 0 );
+        break;
       case ' ': 
-         isAnimate = !isAnimate;
-         glutPostRedisplay();
-         break;
+        isAnimate = !isAnimate;
+        glutPostRedisplay();
+        break;
       case 'x':
-         Xangle += 5.0;
-		 if (Xangle > 360.0) Xangle -= 360.0;
-         glutPostRedisplay();
-         break;
+        Xangle += 5.0;
+		    if ( Xangle > 360.0 ) {
+          Xangle -= 360.0;          
+        } 
+        glutPostRedisplay();
+        break;
       case 'X':
-         Xangle -= 5.0;
-		 if (Xangle < 0.0) Xangle += 360.0;
-         glutPostRedisplay();
-         break;
+        Xangle -= 5.0;
+		    if ( Xangle < 0.0 ) {
+          Xangle += 360.0;
+        }
+        glutPostRedisplay();
+        break;
       case 'y':
-         Yangle += 5.0;
-		 if (Yangle > 360.0) Yangle -= 360.0;
-         glutPostRedisplay();
-         break;
+        Yangle += 5.0;
+		    if ( Yangle > 360.0 ) {
+          Yangle -= 360.0;
+        }
+        glutPostRedisplay();
+        break;
       case 'Y':
-         Yangle -= 5.0;
-		 if (Yangle < 0.0) Yangle += 360.0;
-         glutPostRedisplay();
-         break;
+        Yangle -= 5.0;
+		    if ( Yangle < 0.0 ) {
+          Yangle += 360.0;
+        }
+        glutPostRedisplay();
+        break;
       case 'z':
-         Zangle += 5.0;
-		 if (Zangle > 360.0) Zangle -= 360.0;
-         glutPostRedisplay();
-         break;
+        Zangle += 5.0;
+		    if ( Zangle > 360.0 ) {
+          Zangle -= 360.0;
+        }
+        glutPostRedisplay();
+        break;
       case 'Z':
-         Zangle -= 5.0;
-		 if (Zangle < 0.0) Zangle += 360.0;
-         glutPostRedisplay();
-         break;
+        Zangle -= 5.0;
+		    if ( Zangle < 0.0 ) {
+          Zangle += 360.0;
+        }
+        glutPostRedisplay();
+        break;
       case 'r':
-         Xangle=0;
-         Yangle=0;
-         Zangle=0;
-         glutPostRedisplay();
-         break;
+        Xangle = 0;
+        Yangle = 0;
+        Zangle = 0;
+        glutPostRedisplay();
+        break;
       case 'w':
-         showAxes=!showAxes;
-         glutPostRedisplay();
-         break;
+        showAxes = !showAxes;
+        glutPostRedisplay();
+        break;
       case 'h':
         showHelp = !showHelp;
         glutPostRedisplay();
         break;
       case '+':
-         if(scale>0.1){
-           scale -=0.1;
-         }
-         glutPostRedisplay();
-         break;
+        if( scale > 0.1 ) {
+          scale -= 0.1;
+        }
+        glutPostRedisplay();
+        break;
       case '-':
-         scale +=0.1;
-         glutPostRedisplay();
-         break;
+        scale += 0.1;
+        glutPostRedisplay();
+        break;
       default:
-         break;
-   }
+        break;
+    }
 }
 
 // Callback routine for non-ASCII key entry
 void specialKeyInput( int key, int , int )
 {
-   if (key == GLUT_KEY_DOWN) animationPeriod += 5;
-   if( key == GLUT_KEY_UP) if (animationPeriod > 5) animationPeriod -= 5;
-   glutPostRedisplay();
+  if ( key == GLUT_KEY_DOWN ) {
+    animationPeriod += 5;
+  }
+  if( key == GLUT_KEY_UP) {
+    if ( animationPeriod > 5 ) {
+      animationPeriod -= 5;
+    }
+  }
+  glutPostRedisplay();
 }
 
 
 
-int main(int argc, char *argv[]) {
+int main( int argc, char *argv[] ) {
   // Calculate positions and store in positions array
   try {
     ifstream input{ "resources/nbody/binary-system-simple.txt" };
@@ -264,27 +284,27 @@ int main(int argc, char *argv[]) {
     }
    
     //Create thread that keeps generating new frames
-    pthread_create(&tStep, NULL, addSteps, NULL);  
+    pthread_create( &tStep, NULL, addSteps, NULL );  
   } catch( const exception &e ) {
     std::cerr << "Error: " << e.what() << "\n";
     return 1;
   }  
   
   // Create graphics and animations
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
-  glutInitWindowSize(500, 500);
-  glutInitWindowPosition(100, 100); 
-  glutCreateWindow("N-Body Simulation"); 
+  glutInit( &argc, argv );
+  glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH ); 
+  glutInitWindowSize( 500, 500 );
+  glutInitWindowPosition( 100, 100 ); 
+  glutCreateWindow( "N-Body Simulation" ); 
   setup(); 
-  glutDisplayFunc(drawScene); 
-  glutReshapeFunc(resize);  
-  glutKeyboardFunc(keyInput);
-  glutSpecialFunc(specialKeyInput);
-  glutTimerFunc(5, animate, 1);
+  glutDisplayFunc( drawScene ); 
+  glutReshapeFunc( resize );  
+  glutKeyboardFunc( keyInput );
+  glutSpecialFunc( specialKeyInput );
+  glutTimerFunc( 5, animate, 1 );
   glutMainLoop(); 
    
-  EXITING=true;
+  EXITING = true;
   return 0;
 }
 
