@@ -43,7 +43,9 @@ public:
 	void restoreState ( tBodyVec& bodies ); // restore the state to bodies (excluding acc)
 	void restoreAccState ( tBodyVec& bodies ); // restores the acceleration
 	void incAccState ( tBodyVec& bodies, double weight ); // used over and over in Runge-Kutta
-	void doEulerStep ( tBodyVec& bodies, double time); // euler step with timeStep duration
+	void doEulerStep ( tBodyVec& bodies, double time); // euler step with time duration
+	void doRK2Step ( tBodyVec& bodies ); 
+	void doRK4Step ( tBodyVec& bodies ); 
 	void doStep( tBodyVec& bodies ); // the actual integration
 	~Integrator() { }
 	};

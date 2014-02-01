@@ -74,7 +74,7 @@ void Integrator::incAccState ( tBodyVec& bodies, double weight ) {
 	}
 }
 
-void Integrator::doEulerStep( tBodyVec& bodies, double time) { // euler step with timeStep duration
+void Integrator::doEulerStep( tBodyVec& bodies, double time ) { // euler step with time duration
     for( size_t i = 0; i < bodies.size(); ++i ) {
       auto r = bodies[i].position();
       auto v = bodies[i].velocity();
@@ -89,6 +89,37 @@ void Integrator::doEulerStep( tBodyVec& bodies, double time) { // euler step wit
     }	
 } 
 
+void Integrator::doRK2Step( tBodyVec& bodies ) { 
+	saveState( bodies );
+	double halfStep = 0.5*_timeStep;
+	doEulerStep( bodies, halfStep);
+    computeAccel( bodies );
+    incAccState( bodies, 1.0 );
+    restoreState( bodies );
+    restoreAccState( bodies );
+    doEulerStep( bodies, _timeStep);
+}
+
+void Integrator::doRK4Step( tBodyVec& bodies ) {
+	saveState( bodies );
+	incAccState( bodies, 1.0/6.0);
+	double halfStep = 0.5*_timeStep;
+	doEulerStep( bodies, halfStep);
+	computeAccel( bodies );
+	incAccState( bodies, 1.0/3.0);
+	restoreState( bodies );
+	doEulerStep( bodies, halfStep);
+	computeAccel( bodies );
+	incAccState( bodies, 1.0/3.0);
+	restoreState( bodies );
+	doEulerStep( bodies, _timeStep);
+	computeAccel( bodies );
+	incAccState( bodies, 1.0/6.0);
+	restoreState( bodies );
+	restoreAccState( bodies );
+	doEulerStep( bodies, _timeStep);
+}
+
 void Integrator::doStep( tBodyVec& bodies ) {
 	computeAccel( bodies );
 	switch ( _integratorType ) {
@@ -97,34 +128,11 @@ void Integrator::doStep( tBodyVec& bodies ) {
 			return;
 		}
 		case RK2: {
-			saveState( bodies );
-			double halfStep = 0.5*_timeStep;
-			doEulerStep( bodies, halfStep);
-		    computeAccel( bodies );
-		    incAccState( bodies, 1.0);
-		    restoreState( bodies );
-		    restoreAccState( bodies );
-		    doEulerStep( bodies, _timeStep);
+			doRK2Step( bodies );
 			return;
 		}
-		case RK4: { 
-			saveState( bodies );
-			incAccState( bodies, 1.0/6.0);
-			double halfStep = 0.5*_timeStep;
-			doEulerStep( bodies, halfStep);
-			computeAccel( bodies );
-			incAccState( bodies, 1.0/3.0);
-			restoreState( bodies );
-			doEulerStep( bodies, halfStep);
-			computeAccel( bodies );
-			incAccState( bodies, 1.0/3.0);
-			restoreState( bodies );
-			doEulerStep( bodies, _timeStep);
-			computeAccel( bodies );
-			incAccState( bodies, 1.0/6.0);
-			restoreState( bodies );
-			restoreAccState( bodies );
-			doEulerStep( bodies, _timeStep);
+		case RK4: {
+			doRK4Step( bodies ); 
 			return;
 		}
 		default:

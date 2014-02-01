@@ -6,6 +6,7 @@
 #include <nbody/Simulation.h>
 #include <nbody/Integrator.h>
 
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <vector>
