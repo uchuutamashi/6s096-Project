@@ -7,6 +7,7 @@
 #include <nbody/Integrator.h>
 
 #include <cstring>
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -16,13 +17,6 @@
 using namespace std;
 
 // Globals
-
-// TODO: add timeStep, Integration method to save/load.
-// Until then, next two lines are stubbed out
-
-// static nbody::integrator_t integrator = nbody::Euler;
-// static double timeStep = 1e-6; // time step of the integrator
-
 
 static int numSteps = 1e4; // number of time steps to evaluate the simulator
 static size_t currentFrame = 0; // Current frame
@@ -75,12 +69,16 @@ void output( float x, float y, float r, float g, float b, void * font, const cha
 
 void drawText() {
   if ( showHelp ) {
-    output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "NBody Simulation |" );
-    output( -0.35, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | " );
-    output( 0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis" );
-    output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "xX, yY, zZ to rotate |" );
-    output( -0.2, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |" );
-    output( 0.4, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom" );
+    const char* topMsg = "NBody Simulation | " 
+                    "h to toggle help | "
+                    "r to reset axis | "
+                    "esc to exit";
+    const char* btmMsg = "xX, yY, zZ to rotate | "
+                    "w to toggle axis | "
+                    "+/- to zoom | " 
+                    "up/down to change speed";
+    output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, topMsg );
+    output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, btmMsg );
   }
 }
 
@@ -120,12 +118,17 @@ void drawScene( void )
    }
 
    // Draw bodies
-   glColor3f( 1.0, 1.0, 0.0 );
+   // glColor3f( 1.0, 1.0, 0.0 );
    auto posIterator = positions[currentFrame].begin();
+   size_t id = 0;
+   Vector3d color;
    while( posIterator != positions[currentFrame].end() ) {  
+     color = sim->getColor(id);
+     glColor3f( (float) color.x(), (float) color.y(), (float) color.z() );
      glTranslatef( ( float ) posIterator->x(), ( float ) posIterator->y(), ( float ) posIterator->z() );
-     glutSolidSphere(0.05,20,20);
+     glutSolidSphere(0.05*cbrt(sim->getMass(id)),20,20);
      glTranslatef( -( float ) posIterator->x(), -( float ) posIterator->y() , -( float ) posIterator->z());
+     id++;
      posIterator++;
    } 
 
@@ -269,9 +272,14 @@ void specialKeyInput( int key, int , int )
 int main( int argc, char *argv[] ) {
   // Calculate positions and store in positions array
   try {
-    ifstream input{ "resources/nbody/binary-system-simple.txt" };
+    string path = "resources/nbody/binary-system-simpleRK4.txt";
+    if( argc > 1 )  path = argv[1];
+
+    ifstream input{ path };
+    
     //ifstream input{ "resources/nbody/binary-system-simpleRK2.txt"};
     //ifstream input{ "resources/nbody/binary-system-simpleRK4.txt"};
+
     sim = new nbody::Simulation{input};
     
     //Fill in some starting frames
@@ -293,7 +301,7 @@ int main( int argc, char *argv[] ) {
   // Create graphics and animations
   glutInit( &argc, argv );
   glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH ); 
-  glutInitWindowSize( 500, 500 );
+  glutInitWindowSize( 800, 800 );
   glutInitWindowPosition( 100, 100 ); 
   glutCreateWindow( "N-Body Simulation" ); 
   setup(); 

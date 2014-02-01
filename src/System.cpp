@@ -5,10 +5,13 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
+#include <time.h>
 
 namespace nbody {
 
   System::System( std::istream &input ) : _body{}, _integrator{} {
+    srand(time(NULL));
     readState( input );
     _integrator.resizeState( _body.size() );
   }
@@ -32,6 +35,13 @@ namespace nbody {
       throw std::out_of_range("ID is larger than total number of bodies");
     }
     return _body[id].position();
+  }
+
+  Vector3d System::getColor( size_t id ) const{
+    if( id >= _body.size() ) {
+      throw std::out_of_range("ID is larger than total number of bodies");
+    }
+    return _body[id].color();
   }
 
   double System::getMass( size_t id ) const{

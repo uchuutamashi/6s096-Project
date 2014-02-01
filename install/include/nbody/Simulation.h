@@ -19,6 +19,7 @@ namespace nbody {
     Simulation( std::istream &input ) : _system{new System(input)}, _name{ generateName() } {}
     ~Simulation() { delete _system; }
     inline Vector3d getPosition( size_t id ) const{ return _system->getPosition(id); }
+    inline Vector3d getColor( size_t id ) const{ return _system->getColor(id); }
     inline double getMass( size_t id ) const{ return _system->getMass(id); }
     inline size_t numBodies() const{ return _system->numBodies(); }
     void evolveSystem( int nSteps );

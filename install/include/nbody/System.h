@@ -33,6 +33,7 @@ typedef std::vector<Body> tBodyVec;
     inline size_t numBodies() const{ return _body.size(); }
     void integrateSystem( );
     Vector3d getPosition( size_t id ) const;
+    Vector3d getColor( size_t id ) const;
     double getMass( size_t id ) const;
     void readState( std::istream &input );
     void readState( std::string filename );
