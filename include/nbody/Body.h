@@ -4,6 +4,8 @@
 #include <nbody/Vector3.h>
 
 #include <iosfwd>
+#include <cstdlib>
+#include <time.h>
 
 namespace nbody {
 
@@ -14,7 +16,7 @@ namespace nbody {
     double _mass;
     Vector3d _color;
   public:
-    Body() : _position{}, _velocity{}, _accel{},  _mass{}, _color{Vector3d{1.0,1.0,0.0}} {}
+    Body() : _position{}, _velocity{}, _accel{},  _mass{}, _color{Vector3d{ (double) (rand()%255)/255, (double) (rand()%255)/255, (double) (rand()%255)/255}} {}
     inline Vector3d position() const { return _position; }
     inline Vector3d& position() { return _position; }
     inline Vector3d velocity() const { return _velocity; }

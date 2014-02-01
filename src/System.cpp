@@ -5,10 +5,13 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
+#include <time.h>
 
 namespace nbody {
 
   System::System( std::istream &input ) : _body{}, _integrator{} {
+    srand(time(NULL));
     readState( input );
     _integrator.resizeState( _body.size() );
   }

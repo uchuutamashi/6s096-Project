@@ -6,7 +6,7 @@
 #include <nbody/Simulation.h>
 #include <nbody/Integrator.h>
 
-#include <string>
+#include <cstring>
 #include <cmath>
 #include <iostream>
 #include <fstream>
@@ -17,13 +17,6 @@
 using namespace std;
 
 // Globals
-
-// TODO: add timeStep, Integration method to save/load.
-// Until then, next two lines are stubbed out
-
-// static nbody::integrator_t integrator = nbody::Euler;
-// static double timeStep = 1e-6; // time step of the integrator
-
 
 static int numSteps = 1e4; // number of time steps to evaluate the simulator
 static size_t currentFrame = 0; // Current frame
@@ -77,11 +70,13 @@ void output( float x, float y, float r, float g, float b, void * font, const cha
 void drawText() {
   if ( showHelp ) {
     output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "NBody Simulation |" );
-    output( -0.35, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | " );
-    output( 0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis" );
+    output( -0.55, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "h to toggle help | " );
+    output( -0.15, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "r to reset axis | " );
+    output(  0.25, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "esc to exit" );
     output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "xX, yY, zZ to rotate |" );
-    output( -0.2, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |" );
-    output( 0.4, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom" );
+    output( -0.48, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "w to toggle axis |" );
+    output( -0.11, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "+/- to zoom | " );
+    output( 0.16, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, "up/down to change speed" );
   }
 }
 
@@ -275,9 +270,14 @@ void specialKeyInput( int key, int , int )
 int main( int argc, char *argv[] ) {
   // Calculate positions and store in positions array
   try {
-    ifstream input{ "resources/nbody/binary-system-simple.txt" };
+    string path = "resources/nbody/binary-system-simpleRK4.txt";
+    if( argc > 1 )  path = argv[1];
+
+    ifstream input{ path };
+    
     //ifstream input{ "resources/nbody/binary-system-simpleRK2.txt"};
     //ifstream input{ "resources/nbody/binary-system-simpleRK4.txt"};
+
     sim = new nbody::Simulation{input};
     
     //Fill in some starting frames
@@ -299,7 +299,7 @@ int main( int argc, char *argv[] ) {
   // Create graphics and animations
   glutInit( &argc, argv );
   glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH ); 
-  glutInitWindowSize( 500, 500 );
+  glutInitWindowSize( 800, 800 );
   glutInitWindowPosition( 100, 100 ); 
   glutCreateWindow( "N-Body Simulation" ); 
   setup(); 
