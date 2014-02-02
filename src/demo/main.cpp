@@ -166,10 +166,10 @@ void setup( void )
    GLfloat light0_specular[] = { 1.0, 1.0, 1.0, 1.0 };
    GLfloat light0_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
 
-   GLfloat light1_position[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+   // GLfloat light1_position[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
    glClearColor ( 0.0, 0.0, 0.0, 0.0 );
    glShadeModel ( GL_SMOOTH );
 
