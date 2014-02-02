@@ -60,9 +60,8 @@ void output( float x, float y, float r, float g, float b, void * font, const cha
 {
   glColor3f( r, g, b );
   glRasterPos2f( x, y );
-  int len, i;
-  len = ( int ) strlen( string );
-  for ( i = 0; i < len; i++ ) {
+  int len = ( int ) strlen( string );
+  for ( int i = 0; i < len; i++ ) {
     glutBitmapCharacter( font, string[i] );
   }
 }
