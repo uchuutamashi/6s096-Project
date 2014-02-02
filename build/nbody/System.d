@@ -1,3 +1,2 @@
-System.o build/nbody/System.d : src/System.cpp install/include/nbody/Constants.h \
- install/include/nbody/System.h install/include/nbody/Integrator.h \
- install/include/nbody/Body.h install/include/nbody/Vector3.h
+System.o build/nbody/System.d : src/System.cpp include/nbody/Constants.h include/nbody/System.h \
+ include/nbody/Integrator.h include/nbody/Body.h include/nbody/Vector3.h
