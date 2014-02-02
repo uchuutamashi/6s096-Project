@@ -1,1 +1,0 @@
-My contribtuions to this project were the multithreading of the step calculation (Steven cleane dup my code for me after I initially implemented it), and I added soem features to the view. Mainly, lighting and the help screen.
