@@ -1,0 +1,6 @@
+I was primarily responsible for the engine (e.g integrator, physics). The
+integrators were wholly created by me (Euler, Runge Kutta order 2, Runge Kutta
+order 4). I was also responsible for many of the physics tests (the initial
+ones were written by Steven). I also wrote the Vector3 tests. I also did some
+work in cleaning up some of the code to reflect the class coding standards
+(this was shared with Steven and Eric). 
