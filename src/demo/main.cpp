@@ -77,8 +77,10 @@ void drawText() {
                     "w to toggle axis | "
                     "+/- to zoom | " 
                     "up/down to change speed";
+    glDisable( GL_LIGHTING );
     output( -0.95, 0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, topMsg );
     output( -0.95, -0.95, 255, 255, 255, GLUT_BITMAP_8_BY_13, btmMsg );
+    glEnable( GL_LIGHTING );
   }
 }
 
@@ -124,9 +126,9 @@ void drawScene( void )
    Vector3d color;
    while( posIterator != positions[currentFrame].end() ) {  
      color = sim->getColor(id);
-     glColor3f( (float) color.x(), (float) color.y(), (float) color.z() );
+     glColor3f( ( float ) color.x(), ( float ) color.y(), ( float ) color.z() );
      glTranslatef( ( float ) posIterator->x(), ( float ) posIterator->y(), ( float ) posIterator->z() );
-     glutSolidSphere(0.05*cbrt(sim->getMass(id)),20,20);
+     glutSolidSphere(0.05 * cbrt( sim->getMass( id ) ), 20, 20 );
      glTranslatef( -( float ) posIterator->x(), -( float ) posIterator->y() , -( float ) posIterator->z());
      id++;
      posIterator++;
@@ -159,17 +161,17 @@ void setup( void )
 
    //Lighting
    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat mat_shininess[] = { 50.0 };
+   GLfloat mat_shininess[] = { 100.0 };
 
    GLfloat light0_position[] = { 0.0, 0.0, 0.0, 1.0 };
    GLfloat light0_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
    GLfloat light0_specular[] = { 1.0, 1.0, 1.0, 1.0 };
    GLfloat light0_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
 
-   GLfloat light1_position[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+   // GLfloat light1_position[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   // GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
    glClearColor ( 0.0, 0.0, 0.0, 0.0 );
    glShadeModel ( GL_SMOOTH );
 
@@ -302,12 +304,10 @@ void specialKeyInput( int key, int , int )
   glutPostRedisplay();
 }
 
-
-
-int main( int argc, char *argv[] ) {
+int initializeSystem( int argc, char *argv[] ) {
   // Calculate positions and store in positions array
   try {
-    string path = "resources/nbody/binary-system-simpleRK4.txt";
+    string path = "resources/nbody/three-body-figure8RK4.txt";
     if( argc > 1 )  path = argv[1];
 
     ifstream input{ path };
@@ -332,7 +332,10 @@ int main( int argc, char *argv[] ) {
     std::cerr << "Error: " << e.what() << "\n";
     return 1;
   }  
-  
+  return 0;
+}
+
+void initializeOpenGL( int argc, char *argv[] ) {
   // Create graphics and animations
   glutInit( &argc, argv );
   glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH ); 
@@ -345,7 +348,15 @@ int main( int argc, char *argv[] ) {
   glutKeyboardFunc( keyInput );
   glutSpecialFunc( specialKeyInput );
   glutTimerFunc( 5, animate, 1 );
-  glutMainLoop(); 
+  glutMainLoop();
+}
+
+int main( int argc, char *argv[] ) {
+  
+  if (initializeSystem(argc, argv)) {
+    return 1;
+  }
+  initializeOpenGL(argc, argv); 
    
   EXITING = true;
   return 0;
