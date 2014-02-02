@@ -156,6 +156,41 @@ void setup( void )
    glClearColor( 0.0, 0.0, 0.0, 0.0 ); 
    glEnable( GL_DEPTH_TEST ); // Enable depth testing
    glOrtho( -scale, scale, -scale, scale, -scale, scale ); 
+
+   //Lighting
+   GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat mat_shininess[] = { 50.0 };
+
+   GLfloat light0_position[] = { 0.0, 0.0, 0.0, 1.0 };
+   GLfloat light0_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat light0_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat light0_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+
+   GLfloat light1_position[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+   glClearColor ( 0.0, 0.0, 0.0, 0.0 );
+   glShadeModel ( GL_SMOOTH );
+
+   glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+   glMaterialfv( GL_FRONT, GL_SHININESS, mat_shininess );
+
+   glLightfv( GL_LIGHT0, GL_DIFFUSE, light0_diffuse );
+   glLightfv( GL_LIGHT0, GL_POSITION, light0_position );
+   glLightfv( GL_LIGHT0, GL_AMBIENT, light0_ambient );
+   glLightfv( GL_LIGHT0, GL_SPECULAR, light0_specular );
+
+   // glLightfv( GL_LIGHT1, GL_DIFFUSE, light1_diffuse );
+   // glLightfv( GL_LIGHT1, GL_POSITION, light1_position );
+   // glLightfv( GL_LIGHT1, GL_AMBIENT, light1_ambient );
+   // glLightfv( GL_LIGHT1, GL_SPECULAR, light1_specular );
+
+   glEnable( GL_LIGHTING );
+   glEnable( GL_LIGHT0 );
+   // glEnable( GL_LIGHT1 );
+   glEnable( GL_COLOR_MATERIAL );
+
    //glutFullScreen();
 }
 
